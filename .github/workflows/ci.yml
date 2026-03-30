@@ -35,8 +35,11 @@ jobs:
 
       - name: Build
         env:
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
-        run: npm run build
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          BASE="/$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')/"
+          echo "Building with Vite base: $BASE"
+          npm run build -- --base="$BASE"
 
       - name: Upload Pages artifact
         if: >-
